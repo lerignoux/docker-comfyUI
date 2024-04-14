@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  comfy:
+    container_name: comfy
+    build: ./
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - ../models/:/srv/ComfyUI/models/checkpoints
+      - ./output:/srv/ComfyUI/output
+    ports:
+      - 8188:8188
+    restart: always
+    networks:
+      - comfy
+
+networks:
+  comfy:
